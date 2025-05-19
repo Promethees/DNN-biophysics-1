@@ -17,6 +17,9 @@ with open('../results/hyperparameters/best_hps.txt', 'r') as f:
 X, y = load_data('../data/vacuum_data.csv')  # Or water_data.csv
 X_scaled, scaler = preprocess_data(X)
 
+# Set input_dim based on dataset
+input_dim = 90 if 'vacuum' in data_file else 134
+
 # Split data (50% train, 10% val, 40% test)
 n = len(X)
 n_train = int(n * 0.5)
@@ -30,7 +33,8 @@ X_test, y_test = X_scaled[test_idx], y[test_idx]
 # Build and train model
 model = build_model(best_hps['n_layers'],
                     [best_hps[f'n_nodes_{i}'] for i in range(best_hps['n_layers'])],
-                    [best_hps[f'l2_lambda_{i}'] for i in range(best_hps['n_layers'])])
+                    [best_hps[f'l2_lambda_{i}'] for i in range(best_hps['n_layers'])], 
+                    input_dim)
 stop_early = tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=5)
 model.fit(X_train, y_train, epochs=1000, validation_data=(X_val, y_val), callbacks=[stop_early])
 

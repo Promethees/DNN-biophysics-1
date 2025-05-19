@@ -11,10 +11,12 @@ X, y = load_data('../data/vacuum_data.csv')  # Or water_data.csv
 X_scaled, scaler = preprocess_data(X)
 model = load_model('../results/models/final_model.h5')
 
+input_dim = 90
+
 # LIME
 explainer = lime.lime_tabular.LimeTabularExplainer(
     X_scaled,
-    feature_names=[f'CV_{i}' for i in range(90)],
+    feature_names=[f'CV_{i}' for i in range(input_dim)],
     mode='regression'
 )
 # Example: Explain a single instance
@@ -25,7 +27,7 @@ exp.save_to_file('../results/plots/lime_explanation.html')
 # SHAP
 explainer = shap.DeepExplainer(model, X_scaled[:100])  # Use a subset for background
 shap_values = explainer.shap_values(X_scaled[:100])
-shap.summary_plot(shap_values, X_scaled[:100], feature_names=[f'CV_{i}' for i in range(90)],
+shap.summary_plot(shap_values, X_scaled[:100], feature_names=[f'CV_{i}' for i in range(input_dim)],
                   show=False)
 import matplotlib.pyplot as plt
 plt.savefig('../results/plots/shap_summary.png')
