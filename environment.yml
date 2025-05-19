@@ -9,7 +9,8 @@ dependencies:
   - pandas>=2.2.0
   - matplotlib>=3.9.0
   - seaborn>=0.13.0
-  - tensorflow>=2.16.0  # CPU version by default; adjust for GPU if needed
+  - tensorflow>=2.16.0
+  - keras>=3.0.0  # Add standalone keras
   - keras-tuner>=1.4.0
   - lime>=0.2.0
   - shap>=0.47.0
@@ -18,7 +19,6 @@ dependencies:
   - scipy>=1.13.0
   - h5py>=3.10.0
   - tqdm>=4.66.0
-  # Jupyter Notebook dependencies
   - jupyter>=1.0.0
   - notebook>=7.0.0
   - ipykernel>=6.29.0
