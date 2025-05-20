@@ -8,10 +8,10 @@ from tensorflow.keras.models import load_model
 import matplotlib.pyplot as plt
 
 # Load data and determine environment
-data_file = '../data/vacuum_data.csv'  # Default, can be changed to water_data.csv
+data_file = f"../data/{env}_data.csv"  # Default, can be changed to water_data.csv
 X, y = load_data(data_file)
 X_scaled, scaler = preprocess_data(X)
-input_dim = 90 if 'vacuum' in data_file else 134
+input_dim = 90 if env == "vacuum" else 134
 
 # Load the corresponding model
 model_file = f'../results/{env}/models/final_model_{env}.h5'
