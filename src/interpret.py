@@ -3,7 +3,7 @@ import shap
 import pandas as pd
 import numpy as np
 from model import predict_p_B
-from utils import load_data, preprocess_data
+from utils import load_data, preprocess_data, env
 from tensorflow.keras.models import load_model
 import matplotlib.pyplot as plt
 
@@ -14,7 +14,7 @@ X_scaled, scaler = preprocess_data(X)
 input_dim = 90 if 'vacuum' in data_file else 134
 
 # Load the corresponding model
-model_file = f'../results/models/final_model_{"vacuum" if "vacuum" in data_file else "water"}.h5'
+model_file = f'../results/{env}/models/final_model_{env}.h5'
 model = load_model(model_file)
 
 # Simulate optimized coordinates (q_1 to q_10) as linear combinations
@@ -42,8 +42,8 @@ for i in range(n_q):
             'bin_edges': ','.join([f'{bins[j]:.1f}-{bins[j+1]:.1f}' for j in range(len(bins)-1)])
         })
 hist_df = pd.DataFrame(hist_summary)
-hist_df.to_csv(f'../results/plots/committor_histogram_{"vacuum" if "vacuum" in data_file else "water"}.csv', index=False)
-print("Histogram summary saved to committor_histogram_<env>.csv")
+hist_df.to_csv(f'../results/{env}/plots/committor_histogram_{env}.csv', index=False)
+print(f"Histogram summary saved to committor_histogram_{env}.csv")
 
 # Table 2: Scatter plot summary (counts of p_B vs q_i, like Figure S2)
 scatter_summary = []
@@ -64,8 +64,8 @@ for i in range(n_q):
                     'count_test': count * 0.4
                 })
 scatter_df = pd.DataFrame(scatter_summary)
-scatter_df.to_csv(f'../results/plots/scatter_summary_{"vacuum" if "vacuum" in data_file else "water"}.csv', index=False)
-print("Scatter plot summary saved to scatter_summary_<env>.csv")
+scatter_df.to_csv(f'../results/{env}/plots/scatter_summary_{env}.csv', index=False)
+print(f"Scatter plot summary saved to scatter_summary_{env}.csv")
 
 # Table 3: CV contributions using LIME and SHAP (like Figure S8)
 explainer_lime = lime.lime_tabular.LimeTabularExplainer(
@@ -91,8 +91,8 @@ for i in range(input_dim):
         'SHAP_Value': shap_values_dict.get(cv_name, 0)
     })
 contrib_df = pd.DataFrame(cv_contrib)
-contrib_df.to_csv(f'../results/plots/cv_contributions_{"vacuum" if "vacuum" in data_file else "water"}.csv', index=False)
-print("CV contributions saved to cv_contributions_<env>.csv")
+contrib_df.to_csv(f'../results/{env}/plots/cv_contributions_{env}.csv', index=False)
+print(f"CV contributions saved to cv_contributions_{env}.csv")
 
 # Optional: Save plots for verification (not tables, but for reference)
 for i in range(n_q):
@@ -103,7 +103,7 @@ for i in range(n_q):
     plt.xlabel('p_B')
     plt.ylabel('Count')
     plt.legend()
-    plt.savefig(f'../results/plots/committor_hist_q_{i+1}_{"vacuum" if "vacuum" in data_file else "water"}.png')
+    plt.savefig(f'../results/{env}/plots/committor_hist_q_{i+1}_{env}.png')
     plt.close()
 
     plt.figure()
@@ -111,5 +111,5 @@ for i in range(n_q):
     plt.title(f'Scatter Plot for q_{i+1} vs p_B')
     plt.xlabel(f'q_{i+1}')
     plt.ylabel('p_B')
-    plt.savefig(f'../results/plots/scatter_q_{i+1}_{"vacuum" if "vacuum" in data_file else "water"}.png')
+    plt.savefig(f'../results/{env}/plots/scatter_q_{i+1}_{env}.png')
     plt.close()

@@ -2,6 +2,8 @@ import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 
+env = "vacuum"
+
 def load_data(file_path):
     df = pd.read_csv(file_path)
     X = df.drop(columns=['p_B']).values  # 90 CVs

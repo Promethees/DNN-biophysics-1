@@ -1,7 +1,7 @@
 import keras_tuner as kt
 import tensorflow as tf
 from model import build_model
-from utils import load_data, preprocess_data, split_data
+from utils import load_data, preprocess_data, split_data, env
 import numpy as np
 
 def model_builder(hp):
@@ -14,7 +14,7 @@ def model_builder(hp):
     return model
 
 # Load and preprocess data
-X, y = load_data('../data/vacuum_data.csv')  # Or water_data.csv
+X, y = load_data(f"../data/{env}_data.csv")  # Or water_data.csv
 X_scaled, scaler = preprocess_data(X)
 X_train, y_train, X_val, y_val = split_data(X_scaled, y)
 
@@ -23,7 +23,7 @@ tuner = kt.BayesianOptimization(
     model_builder,
     objective='val_loss',
     max_trials=150,
-    directory='../results/hyperparameters',
+    directory=f"../results/{env}/hyperparameters",
     project_name='alanine_dnn'
 )
 
@@ -35,7 +35,7 @@ tuner.search(X_train, y_train, epochs=1000, validation_data=(X_val, y_val), call
 
 # Save best hyperparameters
 best_hps = tuner.get_best_hyperparameters(num_trials=1)[0]
-with open('../results/hyperparameters/best_hps.txt', 'w') as f:
+with open(f"../results/{env}/hyperparameters/best_hps.txt", 'w') as f:
     f.write(f"n_layers: {best_hps.get('n_layers')}\n")
     for i in range(best_hps.get('n_layers')):
         f.write(f"n_nodes_{i}: {best_hps.get(f'n_nodes_{i}')}\n")

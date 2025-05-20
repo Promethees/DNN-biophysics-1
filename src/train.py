@@ -1,12 +1,12 @@
 import tensorflow as tf
 from model import build_model, predict_p_B
-from utils import load_data, preprocess_data
+from utils import load_data, preprocess_data, env
 import numpy as np
 from sklearn.metrics import mean_squared_error
 
 # Load best hyperparameters
 best_hps = {}
-with open('../results/hyperparameters/best_hps.txt', 'r') as f:
+with open(f"../results/{env}/hyperparameters/best_hps_{env}.txt", 'r') as f:
     lines = f.readlines()
     best_hps['n_layers'] = int(lines[0].split(': ')[1])
     for i in range(best_hps['n_layers']):
@@ -14,11 +14,11 @@ with open('../results/hyperparameters/best_hps.txt', 'r') as f:
         best_hps[f'l2_lambda_{i}'] = float(lines[2*i+2].split(': ')[1])
 
 # Load and preprocess data
-X, y = load_data('../data/vacuum_data.csv')  # Or water_data.csv
+X, y = load_data(f"../data/{env}_data.csv")  # Or water_data.csv
 X_scaled, scaler = preprocess_data(X)
 
 # Set input_dim based on dataset
-input_dim = 90 if 'vacuum' in data_file else 134
+input_dim = 90 if env == "vacuum" else 134
 
 # Split data (50% train, 10% val, 40% test)
 n = len(X)
@@ -42,4 +42,4 @@ model.fit(X_train, y_train, epochs=1000, validation_data=(X_val, y_val), callbac
 y_pred = predict_p_B(model, X_test)
 rmse = np.sqrt(mean_squared_error(y_test, y_pred))
 print(f"Test RMSE: {rmse}")
-model.save('../results/models/final_model.h5')
+model.save(f"../results/{env}/models/final_model_{env}.h5")
