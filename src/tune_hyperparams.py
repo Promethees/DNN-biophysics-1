@@ -9,7 +9,7 @@ def model_builder(hp):
     n_nodes = [hp.Int(f'n_nodes_{i}', 100, 5000, step=100) for i in range(n_layers)]
     l2_lambda = [hp.Float(f'l2_lambda_{i}', 0.0001, 0.1, sampling='log') for i in range(n_layers)]
     # Determine input_dim based on dataset (hardcoded for now, can be made dynamic)
-    input_dim = 90  # Default for vacuum
+    input_dim = 90  if env == "vacuum" else 134
     model = build_model(n_layers, n_nodes, l2_lambda, input_dim)
     return model
 
