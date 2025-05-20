@@ -45,7 +45,7 @@ for i in range(n_q):
 hist_df = pd.DataFrame(hist_summary)
 plot_path = f'../results/{env}/plots'
 if not os.path.exists(plot_path):
-	os.mkdirs(plot_path)
+	os.makedirs(plot_path)
 hist_df.to_csv(f'../results/{env}/plots/committor_histogram_{env}.csv', index=False)
 print(f"Histogram summary saved to committor_histogram_{env}.csv")
 
