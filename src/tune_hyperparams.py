@@ -35,7 +35,7 @@ tuner.search(X_train, y_train, epochs=1000, validation_data=(X_val, y_val), call
 
 # Save best hyperparameters
 best_hps = tuner.get_best_hyperparameters(num_trials=1)[0]
-with open(f"../results/{env}/hyperparameters/best_hps.txt", 'w') as f:
+with open(f"../results/{env}/hyperparameters/best_hps_{env}.txt", 'w') as f:
     f.write(f"n_layers: {best_hps.get('n_layers')}\n")
     for i in range(best_hps.get('n_layers')):
         f.write(f"n_nodes_{i}: {best_hps.get(f'n_nodes_{i}')}\n")
