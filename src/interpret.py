@@ -14,7 +14,7 @@ X_scaled, scaler = preprocess_data(X)
 input_dim = 90 if env == "vacuum" else 134
 
 # Load the corresponding model
-model_file = f'../results/{env}/models/final_model_{env}.h5'
+model_file = f'../results/{env}/models/final_model_{env}.keras'
 model = load_model(model_file)
 
 # Simulate optimized coordinates (q_1 to q_10) as linear combinations

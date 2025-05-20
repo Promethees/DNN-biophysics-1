@@ -42,4 +42,4 @@ model.fit(X_train, y_train, epochs=1000, validation_data=(X_val, y_val), callbac
 y_pred = predict_p_B(model, X_test)
 rmse = np.sqrt(mean_squared_error(y_test, y_pred))
 print(f"Test RMSE: {rmse}")
-model.save(f"../results/{env}/models/final_model_{env}.h5")
+model.save(f"../results/{env}/models/final_model_{env}.keras")
