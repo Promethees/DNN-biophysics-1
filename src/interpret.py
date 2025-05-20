@@ -6,6 +6,7 @@ from model import predict_p_B
 from utils import load_data, preprocess_data, env
 from tensorflow.keras.models import load_model
 import matplotlib.pyplot as plt
+import os 
 
 # Load data and determine environment
 data_file = f"../data/{env}_data.csv"  # Default, can be changed to water_data.csv
@@ -42,6 +43,9 @@ for i in range(n_q):
             'bin_edges': ','.join([f'{bins[j]:.1f}-{bins[j+1]:.1f}' for j in range(len(bins)-1)])
         })
 hist_df = pd.DataFrame(hist_summary)
+plot_path = f'../results/{env}/plots'
+if not os.path.exists(plot_path):
+	os.mkdirs(plot_path)
 hist_df.to_csv(f'../results/{env}/plots/committor_histogram_{env}.csv', index=False)
 print(f"Histogram summary saved to committor_histogram_{env}.csv")
 
